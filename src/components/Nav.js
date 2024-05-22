@@ -1,7 +1,25 @@
 import React,{useState,useEffect} from 'react';
 import './Nav.css'
+import { auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 function Nav() {
+    const[user,SetUser]=useState(false)
+
+    useEffect(() => {
+     const unsubscribe = auth.onAuthStateChanged(userAuth => {
+       if (userAuth) {
+          SetUser(true)
+       } else {
+         SetUser(false)
+   
+       }
+     });
+   
+   
+     return () => unsubscribe();
+   }, []);
+
     const[show,handleShow]=useState(false)
 
     const transitionNavbar=()=>{
@@ -20,7 +38,13 @@ function Nav() {
         <div className='nav-content '>
         <img className='nav-logo' src='https://github.com/navya123jacob/Netflix-clone/blob/main/src/logo.png?raw=true' alt='netflix-logo'/>
         <img className='nav-avatar' src='https://github.com/navya123jacob/Netflix-clone/blob/main/src/netflix-avatar.jpg?raw=true' alt='user-avatar'/>
-        <div className='logout-bar'>logout</div>
+        {user?(<button className='logout-bar' onClick={()=>
+            {
+                auth.signOut()
+            }
+        }>
+            logout
+            </button>):null}
         </div>
         </div>
     
