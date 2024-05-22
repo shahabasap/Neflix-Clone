@@ -4,38 +4,29 @@ import './App.css';
 import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
 import HomeScreen from './components/Screen/HomeScreen';
 import LoginScreen from './components/Screen/LoginScreen';
+import SignInScreen from './components/Screen/SignInScreen';
 import { auth } from './firebase';
 import Context from './store/Context';
 
 
+
+
 function App() {
-const[user,SetUser]=useState(false)
 
- useEffect(() => {
-  const unsubscribe = auth.onAuthStateChanged(userAuth => {
-    if (userAuth) {
-       SetUser(true)
-    } else {
-      SetUser(false)
-
-    }
-  });
-
-
-  return () => unsubscribe();
-}, []);
   return (
     <div className='app'>
     
 
       <Router>
       <Context>
-        {
-        !user?(<LoginScreen />):
+
         <Routes>
-        <Route exact path='/' element={<HomeScreen />} />
+        <Route exact path='/' element={<LoginScreen />} />
+        <Route exact path='/home' element={<HomeScreen />} />
+        <Route exact path='/login' element={<SignInScreen />} />
    
-      </Routes>}
+   
+      </Routes>
       </Context>
       </Router>
     </div>

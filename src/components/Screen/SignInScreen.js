@@ -1,10 +1,12 @@
 import { useRef } from 'react'
-import './SignUpScreen.css'
+import './SignInScreen.css'
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase'
+import { useNavigate } from 'react-router-dom';
 function SignUpScreen() {
     const emailRef=useRef()
     const passwordRef=useRef()
+    const navigate=useNavigate()
     const Register=async(e)=>{
         
            try
@@ -28,7 +30,16 @@ function SignUpScreen() {
             const userCredentialMatching=await signInWithEmailAndPassword(auth,
             emailRef.current.value,passwordRef.current.value)
 
-            console.log("hidata",userCredentialMatching)
+            if (userCredentialMatching) 
+              {
+              navigate('/home')
+            }
+            else
+            {
+              alert("The Give Data is invalied")
+            }
+
+           
            }
            catch(error)
            {
@@ -37,6 +48,7 @@ function SignUpScreen() {
     }
     
     return ( 
+      <div className='Outer-Cotainer'>
     <div className='signupScreen'>
       <form action="">
         <h1>Sign In</h1>
@@ -47,6 +59,7 @@ function SignUpScreen() {
         <span className='signupScreen_link' onClick={Register}>Sign Up now</span></h4>
       </form>
     </div> 
+    </div>
 );
 }
 

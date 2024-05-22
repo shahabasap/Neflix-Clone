@@ -1,4 +1,12 @@
+.Outer-Cotainer{
+    display: flex;
+    background: url('https://i.redd.it/zjgs096khv591.jpg');
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
 .signupScreen{
+
     padding: 70px;
     background: rgb(0, 0, 0,0.85);
     width: 30%;
