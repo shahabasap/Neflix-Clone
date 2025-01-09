@@ -1,20 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './LoginScreen.css'
-import SignUpScreen from './SignupScreen';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../features/counter/userSlice';
+import HomeScreen from './HomeScreen';
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 export default function LoginScreen() {
-  const [signIn,setSignIn]=useState(false);
+
+  const user=useSelector(selectUser)
+  const navigate=useNavigate()
+ 
 
   return (
-    <div className='loginScreen'>
+    <div src="">
+    {user ?(<HomeScreen />):(<div className='loginScreen'>
      <div className="loginScreen-background">
       <img className='login-screen-logo' src="https://assets-global.website-files.com/5ee732bebd9839b494ff27cd/5ee732bebd98393d75ff281d_580b57fcd9996e24bc43c529.png" alt="Login-Back-Ground" />
-      <button onClick={()=>setSignIn(true)} className='loginscreen_button'>Sign In</button>
+      <button  className='loginscreen_button' onClickCapture={()=>navigate('/signin')}>Sign In</button>
       <div className="loginscreen_gradiant"></div>
      </div>
      <div className="loginScreen_body">
-      {signIn ? (<SignUpScreen />):(
+
         <>
         <h1>Unlimited films, TV programmes and more.</h1>
       <h2>Watch anywhere,Cancel at any time.</h2>
@@ -24,18 +33,20 @@ export default function LoginScreen() {
 
         <form action="">
         <input  type="email" placeholder='Email Address' />
-        <button onClick={()=>setSignIn(true)} className='loginScreen_getstarted'>GET STARTED</button>
+        <button className='loginScreen_getstarted'>GET STARTED</button>
 
        </form>
         </div>
        
       </div>
       </>
-      )}
-      <>
-      
-      </>
+
      </div>
-    </div>
-  )
+    </div>)
+  }
+  </div>
+
+
+
+)
 }

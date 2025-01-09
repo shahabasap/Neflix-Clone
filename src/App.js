@@ -1,46 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { Counter } from './features/counter/Counter';
+import React, { Suspense, useEffect } from 'react';
 import './App.css';
-
 import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
-import HomeScreen from './components/Screen/HomeScreen';
 import LoginScreen from './components/Screen/LoginScreen';
 import { auth } from './firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout, selectUser } from './features/counter/userSlice';
+import ProfileScreen from './components/Screen/ProfileScreen';
+import SigninScreen from './components/Screen/SigninScreen';
+import SignUpScreen from './components/Screen/SignupScreen';
+
 
 function App() {
-const[kk,SetUser]=useState(false)
-const data=null
+const user=useSelector(selectUser)
+const dispatch=useDispatch()
 
-const user=true
+
+
+
  useEffect(() => {
   const unsubscribe = auth.onAuthStateChanged(userAuth => {
     if (userAuth) {
-       SetUser(true)
+      dispatch(login({
+
+        uid:userAuth.uid,
+        email:userAuth.email
+
+      }))
     } else {
-      SetUser(true)
+
+      dispatch(logout())
 
     }
-  });
+  },[dispatch]);
 
 
   return () => unsubscribe();
 }, []);
   return (
     <div className='app'>
-    
-
+ <Suspense fallback={<Loading />}>
       <Router>
-        {
-        !user?(<LoginScreen />):
-        <Routes>
-        <Route exact path='/' element={<HomeScreen />} />
-   
-      </Routes>}
-          
+     
+            <Routes>
+              <Route exact path='/' element={<LoginScreen />} />
+              <Route exact path='/profile' element={<ProfileScreen />} />
+              <Route exact path='/signin' element={<SigninScreen />} />
+              <Route exact path='/sign-up' element={<SignUpScreen />} />
+            </Routes>
+       
+      
       </Router>
+   
+      </Suspense>
     </div>
    
   );
+}
+
+function Loading() {
+  return <h2>🌀 Loading...</h2>;
 }
 
 export default App;
